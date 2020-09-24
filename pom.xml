@@ -16,12 +16,26 @@
     <name>cat-component</name>
     <description>cat-component is cat-framework extensions.</description>
 
+    <url>http://cat.lakex.cn</url>
+    <licenses>
+        <license>
+            <name>The LGPL License</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>LarryKoo</name>
+            <email>gumutianqi@gmail.com</email>
+        </developer>
+    </developers>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
 
     <modules>
-
     </modules>
 
     <dependencyManagement>
