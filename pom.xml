@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <name>cat-component</name>
-    <description>cat-component is cat-framework extensions.</description>
+    <description>cat-component is the extensions of cat-framework.</description>
 
     <url>http://cat.lakex.cn</url>
     <licenses>
@@ -33,16 +33,12 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <cat-core.version>0.0.1-SNAPSHOT</cat-core.version>
     </properties>
 
     <modules>
+        <module>cat-data-mongodb</module>
     </modules>
-
-    <dependencyManagement>
-    </dependencyManagement>
-
-    <dependencies>
-    </dependencies>
 
     <build>
         <plugins>
