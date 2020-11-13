@@ -38,7 +38,7 @@ import java.io.Serializable;
  * @date 2020/11/12 14:16
  * @since 3.0.0
  */
-public interface ReactiveCustomMongoRepository<T, ID extends Serializable> extends ReactiveSortingRepository<T, ID> {
+public interface BaseReactiveMongoRepository<T, ID extends Serializable> extends ReactiveSortingRepository<T, ID> {
     /**
      * 有序执行，若Bulk中的某个操作写入失败，不再执行后面的操作
      *

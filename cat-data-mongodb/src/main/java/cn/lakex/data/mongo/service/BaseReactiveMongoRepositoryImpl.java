@@ -21,13 +21,11 @@ import com.mongodb.client.result.UpdateResult;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import lombok.NonNull;
 import org.bson.Document;
-import org.springframework.data.geo.GeoResults;
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.mongodb.repository.query.MongoEntityInformation;
@@ -50,14 +48,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * @date 2020/11/12 15:55
  * @since 3.0.0
  */
-public class ReactiveCustomMongoRepositoryImpl<T, ID extends Serializable> extends SimpleReactiveMongoRepository<T, ID>
-        implements ReactiveCustomMongoRepository<T, ID> {
+public class BaseReactiveMongoRepositoryImpl<T, ID extends Serializable> extends SimpleReactiveMongoRepository<T, ID>
+        implements BaseReactiveMongoRepository<T, ID> {
 
     protected final ReactiveMongoOperations reactiveOperations;
     protected final MongoEntityInformation<T, ID> information;
 
-    public ReactiveCustomMongoRepositoryImpl(@NonNull MongoEntityInformation<T, ID> metadata,
-                                             @NonNull ReactiveMongoOperations operations) {
+    public BaseReactiveMongoRepositoryImpl(@NonNull MongoEntityInformation<T, ID> metadata,
+                                           @NonNull ReactiveMongoOperations operations) {
         super(metadata, operations);
         information = metadata;
         reactiveOperations = operations;

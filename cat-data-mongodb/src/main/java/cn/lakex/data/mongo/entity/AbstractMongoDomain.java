@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
@@ -41,25 +42,26 @@ public abstract class AbstractMongoDomain extends AbstractDomain {
     @Schema(title = "An ObjectId of Mongo")
     String id;
 
-    @Field(value = "created_at")
-    @Schema(title = "Created time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime createdAt;
-
-    @Field(value = "modified_at")
-    @Schema(title = "Modified time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime modifiedAt;
-
-    @Field(value = "created_at")
+    @Field(value = "created_by")
     @Schema(title = "Created user")
     String createdBy;
 
-    @Field(value = "modified_by")
-    @Schema(title = "Modified user")
-    String modifiedBy;
+    @Field(value = "created_date")
+    @Schema(title = "Created date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime createdDate;
+
+    @Field(value = "last_modified_by")
+    @Schema(title = "Last modified user")
+    String lastModifiedBy;
+
+    @Field(value = "last_modified_date")
+    @Schema(title = "Last modified date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime lastModifiedDate;
 
     @Field(value = "del_flag")
+    @Indexed(name = "idx_del_flag")
     @Schema(title = "Delete flag，the default is false.")
     Boolean delFlag;
 }

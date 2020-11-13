@@ -30,14 +30,12 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
-import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +49,7 @@ import java.util.List;
  */
 @Slf4j
 @Configuration
-@ConditionalOnClass(ReactiveMongoOperations.class)
+@ConditionalOnClass(MongoClient.class)
 @EnableConfigurationProperties({MongoProperties.class})
 public class CustomMongoAutoConfiguration extends AbstractReactiveMongoConfiguration {
     @Getter
@@ -59,18 +57,9 @@ public class CustomMongoAutoConfiguration extends AbstractReactiveMongoConfigura
     @Getter
     private final Environment environment;
 
-    private MongoClient mongoClient;
-
     public CustomMongoAutoConfiguration(MongoProperties properties, Environment environment) {
         this.properties = properties;
         this.environment = environment;
-    }
-
-    @PreDestroy
-    public void close() {
-        if (mongoClient != null) {
-            mongoClient.close();
-        }
     }
 
     @Override
@@ -80,19 +69,17 @@ public class CustomMongoAutoConfiguration extends AbstractReactiveMongoConfigura
 
     @Override
     public ReactiveMongoTemplate reactiveMongoTemplate(ReactiveMongoDatabaseFactory factory, MappingMongoConverter converter) {
-        return new ReactiveMongoTemplate(mongoClient(), getDatabaseName());
+        return new ReactiveMongoTemplate(reactiveMongoClient(), getDatabaseName());
     }
 
     @Bean
     public ReactiveMongoTemplate mongoReactiveTemplate() {
-        return new ReactiveMongoTemplate(mongoClient(), getDatabaseName());
+        return new ReactiveMongoTemplate(reactiveMongoClient(), getDatabaseName());
     }
 
-    @Bean
-    public MongoClient mongoClient() {
-        // It can add custom options to MongoClient
-        // ConnectionString, MongoClientSettings and MongoDriverInformation
-        return mongoClient = MongoClients.create();
+    @Override
+    public MongoClient reactiveMongoClient() {
+        return MongoClients.create();
     }
 
     @Bean
