@@ -16,7 +16,7 @@
 
 package cn.lakex.data.mongo.entity;
 
-import cn.lakex.framework.core.entity.AbstractDomain;
+import cn.lakex.framework.core.entity.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public abstract class AbstractMongoDomain extends AbstractDomain {
+public abstract class AbstractMongoDomain extends AbstractEntity {
     private static final long serialVersionUID = -203869230800013790L;
 
     @Schema(title = "An ObjectId of Mongo")
