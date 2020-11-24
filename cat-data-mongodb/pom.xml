@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>cat-data-mongodb</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${cat-data-mongodb.version}</version>
     <packaging>jar</packaging>
 
     <name>cat-data-mongodb</name>
