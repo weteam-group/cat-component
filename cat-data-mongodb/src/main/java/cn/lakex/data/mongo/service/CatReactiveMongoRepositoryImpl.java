@@ -48,14 +48,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * @date 2020/11/12 15:55
  * @since 3.0.0
  */
-public class BaseReactiveMongoRepositoryImpl<T, ID extends Serializable> extends SimpleReactiveMongoRepository<T, ID>
-        implements BaseReactiveMongoRepository<T, ID> {
+public class CatReactiveMongoRepositoryImpl<T, ID extends Serializable> extends SimpleReactiveMongoRepository<T, ID>
+        implements CatReactiveMongoRepository<T, ID> {
 
     protected final ReactiveMongoOperations reactiveOperations;
     protected final MongoEntityInformation<T, ID> information;
 
-    public BaseReactiveMongoRepositoryImpl(@NonNull MongoEntityInformation<T, ID> metadata,
-                                           @NonNull ReactiveMongoOperations operations) {
+    public CatReactiveMongoRepositoryImpl(@NonNull MongoEntityInformation<T, ID> metadata,
+                                          @NonNull ReactiveMongoOperations operations) {
         super(metadata, operations);
         information = metadata;
         reactiveOperations = operations;

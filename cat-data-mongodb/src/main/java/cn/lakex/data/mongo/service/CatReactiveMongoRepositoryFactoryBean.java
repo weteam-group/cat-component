@@ -44,10 +44,10 @@ import static org.springframework.data.querydsl.QuerydslUtils.QUERY_DSL_PRESENT;
  * @date 2020/11/13 15:01
  * @since 3.0.0
  */
-public class BaseReactiveMongoRepositoryFactoryBean<T extends ReactiveMongoRepository<S, ID>, S, ID extends Serializable>
+public class CatReactiveMongoRepositoryFactoryBean<T extends ReactiveMongoRepository<S, ID>, S, ID extends Serializable>
         extends ReactiveMongoRepositoryFactoryBean<T, S, ID> {
 
-    public BaseReactiveMongoRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
+    public CatReactiveMongoRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
         super(repositoryInterface);
     }
 
@@ -85,7 +85,7 @@ public class BaseReactiveMongoRepositoryFactoryBean<T extends ReactiveMongoRepos
 
         @Override
         protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-            return BaseReactiveMongoRepositoryImpl.class;
+            return CatReactiveMongoRepositoryImpl.class;
         }
 
         /**
