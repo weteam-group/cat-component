@@ -17,6 +17,7 @@
 package cn.lakex.data.mongo.config;
 
 import cn.lakex.data.mongo.MongoLogConstant;
+import cn.lakex.data.mongo.service.CatReactiveMongoRepositoryFactoryBean;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import lombok.Getter;
@@ -34,8 +35,10 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
+import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,15 +54,27 @@ import java.util.List;
 @Configuration
 @ConditionalOnClass(MongoClient.class)
 @EnableConfigurationProperties({MongoProperties.class})
-public class CustomMongoAutoConfiguration extends AbstractReactiveMongoConfiguration {
+@EnableReactiveMongoRepositories(repositoryFactoryBeanClass = CatReactiveMongoRepositoryFactoryBean.class)
+public class CatMongoAutoConfiguration extends AbstractReactiveMongoConfiguration {
     @Getter
     private final MongoProperties properties;
     @Getter
     private final Environment environment;
 
-    public CustomMongoAutoConfiguration(MongoProperties properties, Environment environment) {
+    private final ReactiveMongoTemplate reactiveMongoTemplate;
+
+    public CatMongoAutoConfiguration(MongoProperties properties, Environment environment,
+                                     ReactiveMongoTemplate reactiveMongoTemplate) {
         this.properties = properties;
         this.environment = environment;
+        this.reactiveMongoTemplate = reactiveMongoTemplate;
+    }
+
+    @PostConstruct
+    public void init() {
+        log.info("Init {} CatReactiveMongoRepositoryFactory.", MongoLogConstant.PLUGIN_NAME);
+        CatReactiveMongoRepositoryFactoryBean.
+                CatReactiveMongoRepositoryFactory.setOperations(reactiveMongoTemplate);
     }
 
     @Override
@@ -69,11 +84,7 @@ public class CustomMongoAutoConfiguration extends AbstractReactiveMongoConfigura
 
     @Override
     public ReactiveMongoTemplate reactiveMongoTemplate(ReactiveMongoDatabaseFactory factory, MappingMongoConverter converter) {
-        return new ReactiveMongoTemplate(reactiveMongoClient(), getDatabaseName());
-    }
-
-    @Bean
-    public ReactiveMongoTemplate mongoReactiveTemplate() {
+        log.info("Init {} a custom reactiveMongoTemplate.", MongoLogConstant.PLUGIN_NAME);
         return new ReactiveMongoTemplate(reactiveMongoClient(), getDatabaseName());
     }
 

@@ -24,7 +24,7 @@ import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.repository.reactive.ReactiveSortingRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +38,7 @@ import java.io.Serializable;
  * @date 2020/11/12 14:16
  * @since 3.0.0
  */
-public interface CatReactiveMongoRepository<T, ID extends Serializable> extends ReactiveSortingRepository<T, ID> {
+public interface CatReactiveMongoRepository<T, ID extends Serializable> extends ReactiveMongoRepository<T, ID> {
     /**
      * 有序执行，若Bulk中的某个操作写入失败，不再执行后面的操作
      *

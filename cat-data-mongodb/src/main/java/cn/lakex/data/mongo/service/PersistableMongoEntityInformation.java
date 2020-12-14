@@ -16,24 +16,24 @@
 
 package cn.lakex.data.mongo.service;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.repository.query.MongoEntityInformation;
-import org.springframework.lang.NonNull;
 
 /**
- * Persistable Mongo Entity information
+ * {@link MongoEntityInformation} implementation wrapping an existing {@link MongoEntityInformation} considering
+ * {@link Persistable} types by delegating {@link #isNew(Object)} and {@link #getId(Object)} to the corresponding
+ * {@link Persistable#isNew()} and {@link Persistable#getId()} implementations.
  *
- * @author LarryKoo (larrykoo@126.com)
- * @slogon 站在巨人的肩膀上
- * @date 2020/11/13 16:46
- * @since 3.0.0
+ * @author Christoph Strobl
+ * @author Oliver Gierke
+ * @since 1.10
  */
 @RequiredArgsConstructor
 public class PersistableMongoEntityInformation<T, ID> implements MongoEntityInformation<T, ID> {
-    private final @NonNull
-    MongoEntityInformation<T, ID> delegate;
+    private final @NonNull MongoEntityInformation<T, ID> delegate;
 
     @Override
     public String getCollectionName() {
@@ -51,18 +51,24 @@ public class PersistableMongoEntityInformation<T, ID> implements MongoEntityInfo
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean isNew(T t) {
+
         if (t instanceof Persistable) {
-            return ((Persistable<?>) t).isNew();
+            return ((Persistable<ID>) t).isNew();
         }
+
         return delegate.isNew(t);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public ID getId(T t) {
+
         if (t instanceof Persistable) {
             return ((Persistable<ID>) t).getId();
         }
+
         return delegate.getId(t);
     }
 

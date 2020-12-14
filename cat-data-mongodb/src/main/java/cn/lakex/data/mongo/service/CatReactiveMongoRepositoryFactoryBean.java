@@ -53,10 +53,16 @@ public class CatReactiveMongoRepositoryFactoryBean<T extends ReactiveMongoReposi
 
     @Override
     protected RepositoryFactorySupport getFactoryInstance(ReactiveMongoOperations operations) {
-        return new BaseReactiveMongoRepositoryFactory(operations);
+        return new CatReactiveMongoRepositoryFactory(operations);
     }
 
-    private static class BaseReactiveMongoRepositoryFactory<T, ID extends Serializable> extends ReactiveMongoRepositoryFactory {
+    /**
+     * Cat Reactive Mongo Repository Factory
+     *
+     * @param <T>
+     * @param <ID>
+     */
+    public static class CatReactiveMongoRepositoryFactory<T, ID extends Serializable> extends ReactiveMongoRepositoryFactory {
         private static ReactiveMongoOperations operations;
         private final MappingContext<? extends MongoPersistentEntity<?>, MongoPersistentProperty> mappingContext;
 
@@ -65,7 +71,7 @@ public class CatReactiveMongoRepositoryFactoryBean<T extends ReactiveMongoReposi
          *
          * @param operations ReactiveMongoOperations
          */
-        public BaseReactiveMongoRepositoryFactory(ReactiveMongoOperations operations) {
+        public CatReactiveMongoRepositoryFactory(ReactiveMongoOperations operations) {
             super(operations);
             this.mappingContext = operations.getConverter().getMappingContext();
         }
@@ -76,7 +82,7 @@ public class CatReactiveMongoRepositoryFactoryBean<T extends ReactiveMongoReposi
          * @param operations ReactiveMongoOperations
          */
         public static void setOperations(ReactiveMongoOperations operations) {
-            BaseReactiveMongoRepositoryFactory.operations = operations;
+            CatReactiveMongoRepositoryFactory.operations = operations;
         }
 
         private static boolean isQueryDslRepository(Class<?> repositoryInterface) {
@@ -116,7 +122,6 @@ public class CatReactiveMongoRepositoryFactoryBean<T extends ReactiveMongoReposi
          * @return {@link MongoEntityInformation}
          */
         private <T, ID> MongoEntityInformation<T, ID> getEntityInformation(Class<T> domainClass, @Nullable RepositoryMetadata metadata) {
-
             MongoPersistentEntity<?> entity = mappingContext.getRequiredPersistentEntity(domainClass);
             return MongoEntityInformationSupport.<T, ID>entityInformationFor(entity,
                     metadata != null ? metadata.getIdType() : null);

@@ -25,12 +25,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 /**
- * Support class responsible for creating {@link MongoEntityInformation} instances for a given {@link MongoPersistentEntity}
+ * Support class responsible for creating {@link MongoEntityInformation} instances for a given
+ * {@link MongoPersistentEntity}.
  *
- * @author LarryKoo (larrykoo@126.com)
- * @slogon 站在巨人的肩膀上
- * @date 2020/11/13 16:40
- * @since 3.0.0
+ * @author Christoph Strobl
+ * @author Mark Paluch
+ * @since 1.10
  */
 public final class MongoEntityInformationSupport {
     public MongoEntityInformationSupport() {

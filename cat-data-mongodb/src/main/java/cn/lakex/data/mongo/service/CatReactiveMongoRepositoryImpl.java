@@ -51,14 +51,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CatReactiveMongoRepositoryImpl<T, ID extends Serializable> extends SimpleReactiveMongoRepository<T, ID>
         implements CatReactiveMongoRepository<T, ID> {
 
-    protected final ReactiveMongoOperations reactiveOperations;
+    protected final ReactiveMongoOperations operations;
     protected final MongoEntityInformation<T, ID> information;
 
     public CatReactiveMongoRepositoryImpl(@NonNull MongoEntityInformation<T, ID> metadata,
                                           @NonNull ReactiveMongoOperations operations) {
         super(metadata, operations);
         information = metadata;
-        reactiveOperations = operations;
+        this.operations = operations;
     }
 
     private Class<T> getEntityClass() {
@@ -66,11 +66,11 @@ public class CatReactiveMongoRepositoryImpl<T, ID extends Serializable> extends 
     }
 
     private String getCollectionName() {
-        return reactiveOperations.getCollectionName(getEntityClass());
+        return operations.getCollectionName(getEntityClass());
     }
 
     protected Mono<MongoCollection<Document>> getDbCollection() {
-        return reactiveOperations.getCollection(getCollectionName());
+        return operations.getCollection(getCollectionName());
     }
 
     /**
@@ -129,76 +129,76 @@ public class CatReactiveMongoRepositoryImpl<T, ID extends Serializable> extends 
 
     @Override
     public Mono<UpdateResult> upsert(Query query, Update update) {
-        return reactiveOperations.upsert(query, update, getEntityClass());
+        return operations.upsert(query, update, getEntityClass());
     }
 
     @Override
     public Mono<Long> count(Query query) {
-        return reactiveOperations.count(query, getEntityClass());
+        return operations.count(query, getEntityClass());
     }
 
     @Override
     public Mono<Boolean> exists(Query query) {
-        return reactiveOperations.exists(query, getEntityClass());
+        return operations.exists(query, getEntityClass());
     }
 
     @Override
     public Mono<T> findOne(Query query) {
-        return reactiveOperations.findOne(query, getEntityClass());
+        return operations.findOne(query, getEntityClass());
     }
 
     @Override
     public Flux<T> findAll(Query query) {
-        return reactiveOperations.find(query, getEntityClass());
+        return operations.find(query, getEntityClass());
     }
 
     @Override
     public Flux<String> findAllId(Query query) {
         return Flux.push(emitter -> {
-            reactiveOperations.find(onlyIdQuery(query), getEntityClass()).doOnNext(t -> emitter.next((String) t));
+            operations.find(onlyIdQuery(query), getEntityClass()).doOnNext(t -> emitter.next((String) t));
             emitter.complete();
         });
     }
 
     @Override
     public Mono<UpdateResult> updateFirst(Query query, Update update) {
-        return reactiveOperations.updateFirst(query, update, getEntityClass());
+        return operations.updateFirst(query, update, getEntityClass());
     }
 
     @Override
     public Mono<UpdateResult> updateMulti(Query query, Update update) {
-        return reactiveOperations.updateMulti(query, update, getEntityClass());
+        return operations.updateMulti(query, update, getEntityClass());
     }
 
     @Override
     public Long remove(Query query) {
         AtomicReference<Long> count = new AtomicReference<>(0L);
-        reactiveOperations.remove(query, getEntityClass()).doOnSuccess(result -> count.set(result.getDeletedCount()));
+        operations.remove(query, getEntityClass()).doOnSuccess(result -> count.set(result.getDeletedCount()));
         return count.get();
     }
 
     @Override
     public Mono<T> findAndModify(Query query, Update update) {
-        return reactiveOperations.findAndModify(query, update, getEntityClass());
+        return operations.findAndModify(query, update, getEntityClass());
     }
 
     @Override
     public Mono<T> findAndRemove(Query query) {
-        return reactiveOperations.findAndRemove(query, getEntityClass());
+        return operations.findAndRemove(query, getEntityClass());
     }
 
     @Override
     public Flux<T> findAllAndRemove(Query query) {
-        return reactiveOperations.findAllAndRemove(query, getEntityClass());
+        return operations.findAllAndRemove(query, getEntityClass());
     }
 
     @Override
     public Flux<?> aggregate(Aggregation aggregation, Class<T> inputType, Class<?> outputType) {
-        return reactiveOperations.aggregate(aggregation, inputType, outputType);
+        return operations.aggregate(aggregation, inputType, outputType);
     }
 
     @Override
     public Flux<?> aggregate(TypedAggregation<?> aggregation, Class<?> outputType) {
-        return reactiveOperations.aggregate(aggregation, outputType);
+        return operations.aggregate(aggregation, outputType);
     }
 }
